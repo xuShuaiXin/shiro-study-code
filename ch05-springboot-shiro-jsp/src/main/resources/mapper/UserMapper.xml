@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsx.boot.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.xsx.boot.model.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, password, salt
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xsx.boot.model.User">
+    insert into tb_user (id, username, password, 
+      salt)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{salt,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xsx.boot.model.User">
+    insert into tb_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xsx.boot.model.User">
+    update tb_user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xsx.boot.model.User">
+    update tb_user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--根据用户名查看用户-->
+  <select id="selectByUserName" resultType="com.xsx.boot.model.User">
+    select <include refid="Base_Column_List" />
+    from tb_user
+    where username = #{username}
+  </select>
+  <!--根据用户名查看角色-->
+  <!--自定义命名-->
+  <resultMap id="userMap" type="User">
+    <id column="u_id" property="id" />
+    <result column="u_name" property="username"/>
+    <collection property="roles" javaType="list" ofType="Role">
+      <id column="r_id" property="id"/>
+      <result column="r_name" property="name"/>
+    </collection>
+    <!--角色信息-->
+  </resultMap>
+  <select id="findRolesByUserName" parameterType="String" resultMap="userMap">
+    SELECT u.id u_id, u.username u_name, r.id r_id, r.name r_name
+    FROM `tb_user` AS u
+    LEFT JOIN`tb_user_role` AS ur
+    ON u.id = ur.userid
+    LEFT JOIN `tb_role` AS r
+    ON ur.roleid = r.id
+    WHERE u.username = #{username}
+  </select>
+  <!--获取角色权限-->
+  <select id="findPermsByRoleId" parameterType="java.lang.Integer" resultType="com.xsx.boot.model.Perms">
+    SELECT p.id AS id, p.NAME AS name, p.url AS url
+    FROM `tb_role_perms` AS rp
+    LEFT JOIN `tb_role` AS r
+    ON rp.roleid = r.id
+    LEFT JOIN `tb_perms` AS p
+    ON rp.permsid = p.id
+    WHERE r.id = #{rId}
+  </select>
+</mapper>
