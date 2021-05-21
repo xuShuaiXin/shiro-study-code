@@ -15,15 +15,15 @@ import java.util.Set;
 
 //自定义的 Cache接口实现类
 @Component
-public class CustomerRedisCache<K,V> implements Cache<K,V> {
+public class CustomerRedisCache222<K,V> implements Cache<K,V> {
     @Resource
     private RedisKeyValueTemplate redisKeyValueTemplate;
     private String cacheName;
 
-    public CustomerRedisCache() {
+    public CustomerRedisCache222() {
     }
 
-    public CustomerRedisCache(String cacheName){
+    public CustomerRedisCache222(String cacheName){
         this.cacheName = cacheName;
     }
     @Override

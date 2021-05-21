@@ -44,7 +44,6 @@ public class OrderController {
 
 //    @RequiresRoles({"user", "admin"})   //表示同时具有多个角色才能访问
     @RequestMapping("/add")         //先有该角色权限才可访问
-//    @RequestMapping("/add")         //先有该角色权限才可访问
     @RequiresPermissions("order:add:*")
     @ResponseBody
     public String add(){

@@ -1,7 +1,5 @@
 package com.xsx.boot.customer;
 
-import com.xsx.boot.mapper.UserMapper;
-import com.xsx.boot.model.Perms;
 import com.xsx.boot.model.Role;
 import com.xsx.boot.model.User;
 import com.xsx.boot.service.UserService;
@@ -16,12 +14,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
 import javax.annotation.Resource;
-import java.util.List;
 
-public class CustomerRealm extends AuthorizingRealm {
-    @Resource
-    private UserMapper userMapper;
-
+public class CustomerRealm222 extends AuthorizingRealm {
     @Resource
     private UserService service;
 
@@ -32,7 +26,7 @@ public class CustomerRealm extends AuthorizingRealm {
         User user = service.selectByUserName(primaryPrincipal);
         if (user != null){
             SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-            System.out.println(user);
+            System.out.println("user =======" + user);
             //根据查询到的内容添加角色
             for (Role role : user.getRoles()) {
                 System.out.println("Role === " + role);
@@ -54,15 +48,12 @@ public class CustomerRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         //认证
         String principal = (String) authenticationToken.getPrincipal();
-        User user = userMapper.selectByUserName(principal);
-
+        User user = service.selectByUserName(principal);
+        System.out.println(user);
         if (user != null){
-            System.out.println(" getUsername ==== " + user.getUsername());
-            System.out.println(" getPassword ==== " + user.getPassword());
-            System.out.println(" getSalt === " + user.getSalt());
             //使用自定义的已经实现序列化接口的CustomerMyByteSource序列化盐
             return new SimpleAuthenticationInfo(principal, user.getPassword(),
-                    new CustomerMyByteSource(user.getSalt()),this.getName());
+                    ByteSource.Util.bytes(user.getSalt()),this.getName());
         }
         return null;
     }

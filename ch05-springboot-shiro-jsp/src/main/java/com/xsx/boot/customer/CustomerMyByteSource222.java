@@ -12,37 +12,37 @@ import java.util.Arrays;
 
 //自定义salt实现  实现序列化接口
 //因为 CustomerMyByteSource没有无参构造所以要实现接口(需要无参构造进行反序列化)
-public class CustomerMyByteSource implements Serializable, ByteSource {
+public class CustomerMyByteSource222 implements Serializable, ByteSource {
 
     private byte[] bytes;
     private String cachedHex;
     private String cachedBase64;
 
     //加入无参构造
-    public CustomerMyByteSource(){}
+    public CustomerMyByteSource222(){}
 
-    public CustomerMyByteSource(byte[] bytes) {
+    public CustomerMyByteSource222(byte[] bytes) {
         this.bytes = bytes;
     }
 
-    public CustomerMyByteSource(char[] chars) {
+    public CustomerMyByteSource222(char[] chars) {
         this.bytes = CodecSupport.toBytes(chars);
     }
 
-    public CustomerMyByteSource(String string) {
+    public CustomerMyByteSource222(String string) {
         this.bytes = CodecSupport.toBytes(string);
     }
 
-    public CustomerMyByteSource(ByteSource source) {
+    public CustomerMyByteSource222(ByteSource source) {
         this.bytes = source.getBytes();
     }
 
-    public CustomerMyByteSource(File file) {
-        this.bytes = (new CustomerMyByteSource.BytesHelper()).getBytes(file);
+    public CustomerMyByteSource222(File file) {
+        this.bytes = (new CustomerMyByteSource222.BytesHelper()).getBytes(file);
     }
 
-    public CustomerMyByteSource(InputStream stream) {
-        this.bytes = (new CustomerMyByteSource.BytesHelper()).getBytes(stream);
+    public CustomerMyByteSource222(InputStream stream) {
+        this.bytes = (new CustomerMyByteSource222.BytesHelper()).getBytes(stream);
     }
 
     public static boolean isCompatible(Object o) {

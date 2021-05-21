@@ -1,8 +1,9 @@
 package com.xsx.boot.config;
 
-import com.xsx.boot.customer.CustomerRealm222;
-import com.xsx.boot.customer.CustomerRedisCacheManager222;
+import com.xsx.boot.customer.CustomerRealm;
+import com.xsx.boot.customer.CustomerRedisCacheManager;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -26,12 +27,12 @@ public class ShiroConfig {
 //        map.put("/register.jsp", "anon");
 //        map.put("/user/register", "anon");
         //如果设置所有都需要认证的话 则需要把公共资源声明在此条代码之上
-        map.put("/user/index", "authc");     // authc表示需要认证和授权
-        map.put("/index.jsp", "authc");     // authc表示需要认证和授权
+//        map.put("/user/index", "authc");     // authc表示需要认证和授权
+//        map.put("/index.jsp", "authc");     // authc表示需要认证和授权
         //默认认证界面路径 /login.jsp
-        shiroFilterFactoryBean.setLoginUrl("/login.jsp");
+//        shiroFilterFactoryBean.setLoginUrl("/view/login");
 
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
+//        shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;
     }
 
@@ -52,12 +53,12 @@ public class ShiroConfig {
         credentialsMatcher.setHashAlgorithmName("MD5");
         credentialsMatcher.setHashIterations(1024);
         //把匹配器添加到realm中
-        CustomerRealm222 realm = new CustomerRealm222();
+        CustomerRealm realm = new CustomerRealm();
         realm.setCredentialsMatcher(credentialsMatcher);
         //6. 开启缓存管理(使用shiro默认的 EhCache缓存管理器--须要引入依赖)
-//        realm.setCacheManager(new EhCacheManager());
+        realm.setCacheManager(new EhCacheManager());
 //        使用自定义的Redis缓存管理器
-        realm.setCacheManager(new CustomerRedisCacheManager222());
+//        realm.setCacheManager(new CustomerRedisCacheManager());
         //开启全局缓存管理器
         realm.setCachingEnabled(true);
         //开启认证缓存

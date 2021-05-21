@@ -1,6 +1,5 @@
 package com.xsx.boot.controller;
 
-import com.sun.deploy.net.HttpResponse;
 import com.xsx.boot.service.UserService;
 import com.xsx.boot.uiti.VerifyCodeUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +25,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     @RequestMapping("/login")
     public String login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
@@ -41,7 +41,7 @@ public class UserController {
                 System.out.println("token=======" + token.getPassword());
                 subject.login(token);           //调用主体的 subject.login(Token)方法进行认证
                 log.info("登录成功");
-                return "redirect:/index.jsp";
+                return "redirect:/view/index";
             }else{
                 //验证码不一致会直接抛异常
                 log.error("验证码不正确!");
@@ -58,7 +58,7 @@ public class UserController {
             e.printStackTrace();
         }
 
-        return "redirect:/login.jsp";
+        return "redirect:/view/login";
     }
 
     @RequestMapping("/register")
@@ -66,13 +66,13 @@ public class UserController {
                        @RequestParam("password") String password){
 
         userService.addUser(username, password);
-        return "redirect:/login.jsp";
+        return "redirect:/view/login";
     }
 
     @RequestMapping("/logout")
     public String logout(){
         userService.logout();
-        return "redirect:/login.jsp";
+        return "redirect:/view/login";
     }
 
     @RequestMapping("/getImage")
