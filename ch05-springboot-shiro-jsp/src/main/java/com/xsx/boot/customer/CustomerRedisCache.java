@@ -23,48 +23,48 @@ public class CustomerRedisCache<K,V> implements Cache<K,V> {
     public CustomerRedisCache() {
     }
 
-    public CustomerRedisCache(String cacheName) {
+    public CustomerRedisCache(String cacheName){
         this.cacheName = cacheName;
     }
-
     @Override
     public V get(K k) throws CacheException {
-        System.out.println("get key === " + k);
-
-        return (V)getRedisTemplate().opsForHash().get(this.cacheName, k.toString());
+        System.out.println("get key:"+k);
+        return (V) getRedisTemplate().opsForHash().get(this.cacheName,k.toString());
     }
 
     @Override
     public V put(K k, V v) throws CacheException {
         System.out.println("put key: "+k);
         System.out.println("put value:"+v);
-        getRedisTemplate().opsForHash().put(this.cacheName, k.toString(), v);
+        getRedisTemplate().opsForHash().put(this.cacheName,k.toString(),v);
         return null;
     }
 
     @Override
     public V remove(K k) throws CacheException {
-        return null;
+        System.out.println("=============remove=============");
+        return (V) getRedisTemplate().opsForHash().delete(this.cacheName,k.toString());
     }
 
     @Override
     public void clear() throws CacheException {
-
+        System.out.println("=============clear==============");
+        getRedisTemplate().delete(this.cacheName);
     }
 
     @Override
     public int size() {
-        return 0;
+        return getRedisTemplate().opsForHash().size(this.cacheName).intValue();
     }
 
     @Override
     public Set<K> keys() {
-        return null;
+        return getRedisTemplate().opsForHash().keys(this.cacheName);
     }
 
     @Override
     public Collection<V> values() {
-        return null;
+        return getRedisTemplate().opsForHash().values(this.cacheName);
     }
 
     //封装获取redisTemplate 并已经序列化

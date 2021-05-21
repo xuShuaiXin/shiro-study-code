@@ -47,25 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean loginUser(String username, String password) {
-        Subject subject = SecurityUtils.getSubject();
 
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-        //
-        try {
-            //如果认证成功会打印 slf4j的日志信息
-            subject.login(token);           //调用主题的 subject.login(Token)方法进行认证
-            log.info("登录成功");
-            return true;
-        }catch (UnknownAccountException e){
-            log.info("错误提示: 找不到此账号!");
-            e.printStackTrace();
-        }catch (IncorrectCredentialsException e){
-            log.info("错误提示: 密码错误!");
-            e.printStackTrace();
-        } catch (Exception e){
-            //如果失败则会直接报错 抛出异常
-            e.printStackTrace();
-        }
         return false;
     }
 
